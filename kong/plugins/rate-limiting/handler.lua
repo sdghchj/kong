@@ -153,7 +153,7 @@ end
 
 
 function RateLimitingHandler:log(_)
-  if kong.ctx.plugin.timer then
+  if kong.service.response.get_status() ~= nil and kong.service.response.get_status() >= 200 and kong.service.response.get_status() < 400 and  kong.ctx.plugin.timer then
     kong.ctx.plugin.timer()
   end
 end

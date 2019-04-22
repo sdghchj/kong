@@ -39,7 +39,9 @@ end
 
 local get_local_key = function(conf, identifier, period, period_date)
   local service_id, route_id = get_service_and_route_ids(conf)
-
+  if period == 'year' then
+        return fmt("ratelimit:%s:%s:%s", route_id, service_id, identifier)
+  end
   return fmt("ratelimit:%s:%s:%s:%s:%s", route_id, service_id, identifier,
              period_date, period)
 end
@@ -181,7 +183,7 @@ return {
 
           idx = idx + 1
           keys[idx] = cache_key
-          if not exists or exists == 0 then
+          if (not exists or exists == 0) and period ~= 'year' then
             expirations[idx] = EXPIRATIONS[period]
           end
         end
